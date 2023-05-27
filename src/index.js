@@ -7,20 +7,16 @@ const refs = {
     error: document.querySelector('.error')
 }
 
-        
-refs.select.addEventListener('click', (e) => {
-    //const arrCats = [];
-    fetchBreeds()
+fetchBreeds()
         .then(cat => {
-            const murkup = cat.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            refs.loader.removeAttribute('hidden', '');
+            const murkup = cat.map(c => `<option value="${c.id}">${c.name}</option>`).join('');     
+            refs.select.innerHTML = murkup;      
+    });
         
-            refs.select.innerHTML = murkup;
-            // arrCats.push(cat);
-            // console.log(arrCats.id);
-            const findCat = cat.find(c => c.id === e.target.value);
-                   
-    
-            fetchCatByBreed(findCat.id)
+refs.select.addEventListener('change', (e) => {
+   
+            fetchCatByBreed(e.target.value)
                 .then(cat => {
                     refs.catInfo.innerHTML = createMurkup(cat);
                 })
@@ -28,7 +24,8 @@ refs.select.addEventListener('click', (e) => {
                     refs.error.removeAttribute('hidden', '');
                     console.log(error)
                 });
-         }); 
+         
+    refs.loader.setAttribute('hidden', '');
 });
 
 function createMurkup(cat) { 
