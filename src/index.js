@@ -1,5 +1,5 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
-//const API_key = 'live_fOxgLowEMvVzv83NVOkuO9MdqpbmCuvrfvPFk27zYDau65gVme3460SYk4qBg6tH';
+
 const refs = {
     select: document.querySelector('.breed-select'),
     catInfo: document.querySelector('.cat-info'),
@@ -7,25 +7,29 @@ const refs = {
     error: document.querySelector('.error')
 }
 
+refs.error.setAttribute('hidden', '');
+
 fetchBreeds()
-        .then(cat => {
-            refs.loader.removeAttribute('hidden', '');
-            const murkup = cat.map(c => `<option value="${c.id}">${c.name}</option>`).join('');     
-            refs.select.innerHTML = murkup;      
-    });
+    .then(cat => {
+        const murkup = cat.map(c => `<option value="${c.id}">${c.name}</option>`).join('');     
+        refs.select.innerHTML = murkup;      
+    })
+    .catch(error => {
+        refs.error.removeAttribute('hidden', '');
+        console.log(error)
+    });;
         
 refs.select.addEventListener('change', (e) => {
-   
-            fetchCatByBreed(e.target.value)
-                .then(cat => {
-                    refs.catInfo.innerHTML = createMurkup(cat);
-                })
-                .catch(error => {
-                    refs.error.removeAttribute('hidden', '');
-                    console.log(error)
-                });
-         
-    refs.loader.setAttribute('hidden', '');
+   refs.loader.removeAttribute('hidden', '');
+        fetchCatByBreed(e.target.value)
+            .then(cat => {             
+                refs.catInfo.innerHTML = createMurkup(cat);
+                refs.loader.setAttribute('hidden', '');
+            })
+            .catch(error => {
+                refs.error.removeAttribute('hidden', '');
+                console.log(error)
+            });
 });
 
 function createMurkup(cat) { 
