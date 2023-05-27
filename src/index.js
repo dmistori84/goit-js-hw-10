@@ -1,5 +1,5 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
-
+//const API_key = 'live_fOxgLowEMvVzv83NVOkuO9MdqpbmCuvrfvPFk27zYDau65gVme3460SYk4qBg6tH';
 const refs = {
     select: document.querySelector('.breed-select'),
     catInfo: document.querySelector('.cat-info'),
@@ -9,14 +9,17 @@ const refs = {
 
         
 refs.select.addEventListener('click', (e) => {
+    //const arrCats = [];
     fetchBreeds()
         .then(cat => {
             const murkup = cat.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         
             refs.select.innerHTML = murkup;
-
+            // arrCats.push(cat);
+            // console.log(arrCats.id);
             const findCat = cat.find(c => c.id === e.target.value);
-               
+                   
+    
             fetchCatByBreed(findCat.id)
                 .then(cat => {
                     refs.catInfo.innerHTML = createMurkup(cat);
@@ -25,7 +28,7 @@ refs.select.addEventListener('click', (e) => {
                     refs.error.removeAttribute('hidden', '');
                     console.log(error)
                 });
-        })
+         }); 
 });
 
 function createMurkup(cat) { 

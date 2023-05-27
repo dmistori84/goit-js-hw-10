@@ -6,7 +6,7 @@ function fetchBreeds() {
 }
 
 function fetchCatByBreed(breedId){
-    fetch(`https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=${breedId}&api_key=${API_key}`)
+    return fetch(`https://api.thecatapi.com/v1/images/search?limit=1&breed_ids=${breedId}&api_key=${API_key}`)
         .then(data => data.json());
 }
 
